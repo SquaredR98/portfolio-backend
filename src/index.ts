@@ -8,6 +8,7 @@ import express, { Express } from 'express';
  */
 import { config } from '@root/config';
 import { BackendServer } from '@root/setupServer';
+import { connectToRedis } from '@root/database';
 
 class Application {
   /**
@@ -15,6 +16,7 @@ class Application {
    */
   public initialize(): void {
     this.loadConfig();
+    connectToRedis();
     const app: Express = express();
     const server: BackendServer = new BackendServer(app);
     server.start();
