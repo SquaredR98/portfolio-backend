@@ -12,6 +12,7 @@ datasource db {
 
 enum Role {
   CUSTOMER
+  SOCIALMEDIAUSER
   ADMIN
   SUPERADMIN
   EMPLOYEE
@@ -23,10 +24,34 @@ enum Permissions {
 }
 
 model Auth {
-  id String @id @default(uuid())
-  username String
-  password String
-  email String
-  role Role
-  permissions Permissions[]
+  id                  String        @id @default(uuid())
+  username            String
+  password            String
+  email               String
+  passwordResetToken  String
+  resetTokenExpiresAt DateTime
+  role                Role
+  permissions         Permissions[]
+  lastLogin           DateTime      @default(now())
+  allowedIp           String
+}
+
+model User {
+  id        String    @id @default(uuid())
+  firstName String
+  lastName  String
+  address   Address[]
+}
+
+model Address {
+  id             String @id @default(uuid())
+  streetNo       String
+  addressLineOne String
+  addressLineTwo String
+  city           String
+  state          String
+  country        String
+  zipcode        Int
+  userId         String
+  user           User   @relation(fields: [userId], references: [id])
 }
